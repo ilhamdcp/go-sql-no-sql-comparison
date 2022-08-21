@@ -79,24 +79,3 @@ func UpdateMenu(id int, name string, description string, price float32) (*Menu, 
 	}
 	return nil, nil
 }
-
-func GetOrderById(db *pgx.Conn, orderId int) (*Order, error) {
-	row := db.QueryRow("SELECT * FROM orders where id = $1", orderId)
-	//var (
-	//	id            pgtype.Int8
-	//	customerName  pgtype.Varchar
-	//	courierName   string
-	//	paymentType   constants.PaymentType
-	//	orderPlatform constants.OrderPlatform
-	//	totalPrice    float32
-	//	createdAt     time.Time
-	//)
-	var order Order
-	err := row.Scan(&order.Id, &order.CustomerName, &order.CourierName, &order.PaymentTypeId, &order.OrderPlatformId,
-		&order.TotalPrice, &order.CreatedAt)
-	if err != nil && err == pgx.ErrNoRows {
-		return nil, err
-	}
-
-	return &order, nil
-}
