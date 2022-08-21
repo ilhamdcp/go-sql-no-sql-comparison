@@ -50,9 +50,6 @@ func GetMenus(id int, keyword string) ([]Menu, error) {
 }
 
 func UpdateMenu(id int, name string, description string, price float32) (*Menu, error) {
-	if id == 0 {
-		return nil, errors.New("invalid ID")
-	}
 	menus, err := GetMenus(id, "")
 	if err != nil {
 		return nil, err

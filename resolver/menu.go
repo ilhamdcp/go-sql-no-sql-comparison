@@ -22,10 +22,25 @@ func GetAllMenus(p graphql.ResolveParams) (interface{}, error) {
 
 func UpdateMenu(p graphql.ResolveParams) (interface{}, error) {
 	id, _ := p.Args["id"].(int)
+
 	if id == 0 {
 		return nil, errors.New("Invalid ID")
 	}
-	menu, err := pgxdriver.UpdateMenu(id, p.Args["name"].(string), p.Args["description"].(string), p.Args["price"].(float32))
+	name, nameOk := p.Args["name"].(string)
+	if !nameOk {
+		name = ""
+	}
+
+	description, descriptionOk := p.Args["description"].(string)
+	if !descriptionOk {
+		description = ""
+	}
+
+	price, priceOk := p.Args["price"].(float64)
+	if !priceOk {
+		price = -1
+	}
+	menu, err := pgxdriver.UpdateMenu(id, name, description, float32(price))
 	if err != nil {
 		return graphql.List{}, err
 	}

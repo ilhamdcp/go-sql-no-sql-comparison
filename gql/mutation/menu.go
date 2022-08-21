@@ -7,13 +7,13 @@ import (
 )
 
 var MenuMutationFields = graphql.Fields{
-	"update": &graphql.Field{
+	"updateMenu": &graphql.Field{
 		Name:        "update menu",
 		Description: "Update selected menu",
 		Type:        schema.MenuType,
 		Args: graphql.FieldConfigArgument{
 			"id": &graphql.ArgumentConfig{
-				Type:        graphql.Int,
+				Type:        graphql.NewNonNull(graphql.Int),
 				Description: "ID of the menu",
 			},
 			"name": &graphql.ArgumentConfig{
