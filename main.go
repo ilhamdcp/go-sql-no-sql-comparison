@@ -22,7 +22,14 @@ func main() {
 	pgxdriver.DbConn = conn
 
 	var schema, err = graphql.NewSchema(graphql.SchemaConfig{
-		Query: gql.Queries,
+		Query: graphql.NewObject(graphql.ObjectConfig{
+			Name:   "rootQuery",
+			Fields: gql.InitQueries(),
+		}),
+		Mutation: graphql.NewObject(graphql.ObjectConfig{
+			Name:   "rootMutation",
+			Fields: gql.InitMutations(),
+		}),
 	})
 	if err != nil {
 		fmt.Println(err)

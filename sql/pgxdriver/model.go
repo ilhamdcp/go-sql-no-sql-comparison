@@ -9,6 +9,12 @@ type Menu struct {
 	Name        string
 	Description string
 	Price       float32
+	Category    *Category
+}
+
+type Category struct {
+	Id   int
+	Name string
 }
 
 type Order struct {

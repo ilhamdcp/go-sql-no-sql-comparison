@@ -28,12 +28,3 @@ var MenuQueryFields = graphql.Fields{
 		Resolve: resolver.GetAllMenus,
 	},
 }
-
-//var MenuMutationFields = gql.Fields{
-//	"update": &gql.Field{
-//		Name: "update menu",
-//		Description: "Update selected menu",
-//		Type: schema.MenuType,
-//		Args: gql.FieldConfi
-//	}
-//}

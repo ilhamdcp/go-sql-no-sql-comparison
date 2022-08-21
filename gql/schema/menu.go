@@ -24,6 +24,26 @@ var MenuType = graphql.NewObject(graphql.ObjectConfig{
 			Type:        graphql.Float,
 			Description: "Price of the menu in Rupiah",
 		},
+		"category": &graphql.Field{
+			Name:        "price",
+			Type:        MenuCategoryType,
+			Description: "Price of the menu in Rupiah",
+		},
+	},
+})
+
+var MenuCategoryType = graphql.NewObject(graphql.ObjectConfig{
+	Name:        "MenuCategory",
+	Description: "Category object of the menu",
+	Fields: graphql.Fields{
+		"id": &graphql.Field{
+			Name: "id",
+			Type: graphql.Int,
+		},
+		"name": &graphql.Field{
+			Name: "name",
+			Type: graphql.String,
+		},
 	},
 })
 
