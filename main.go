@@ -1,13 +1,18 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"github.com/graphql-go/graphql"
 	"github.com/graphql-go/handler"
 	"github.com/jackc/pgx"
 	"go-sql-no-sql-comparison/gql"
+	"go-sql-no-sql-comparison/nosql/mongodb"
 	"go-sql-no-sql-comparison/sql/pgxdriver"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"net/http"
+	"time"
 )
 
 func main() {
@@ -21,7 +26,23 @@ func main() {
 
 	pgxdriver.DbConn = conn
 
-	var schema, err = graphql.NewSchema(graphql.SchemaConfig{
+	uri := "mongodb://mongouser:mongopassword@localhost:27017/"
+
+	client, errMongo := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
+	if errMongo != nil {
+		panic(errMongo)
+		return
+	}
+	mongodb.MongoClient = client
+
+	context, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	mongodb.Context = context
+
+	mongodb.GetMenus()
+
+	var schema, errGraphql = graphql.NewSchema(graphql.SchemaConfig{
 		Query: graphql.NewObject(graphql.ObjectConfig{
 			Name:   "rootQuery",
 			Fields: gql.InitQueries(),
@@ -31,8 +52,8 @@ func main() {
 			Fields: gql.InitMutations(),
 		}),
 	})
-	if err != nil {
-		fmt.Println(err)
+	if errGraphql != nil {
+		fmt.Println(errGraphql)
 		return
 	}
 	h := handler.New(&handler.Config{
@@ -41,8 +62,16 @@ func main() {
 		GraphiQL: true,
 	})
 	http.Handle("/gql", h)
-	err = http.ListenAndServe(":8000", nil)
-	if err != nil {
+	errGraphql = http.ListenAndServe(":8000", nil)
+	if errGraphql != nil {
 		return
+	}
+
+	defer disconnectMongo()
+}
+
+func disconnectMongo() {
+	if err := mongodb.MongoClient.Disconnect(context.TODO()); err != nil {
+		panic(err)
 	}
 }

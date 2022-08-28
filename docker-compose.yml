@@ -1,5 +1,5 @@
 services:
-  database:
+  postgres:
     container_name: postgres_container
     image: postgres
     restart: always
@@ -18,8 +18,11 @@ services:
     ports:
       - 27017:27017
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_ROOT_USERNAME: mongouser
+      MONGO_INITDB_ROOT_PASSWORD: mongopassword
+      ME_CONFIG_MONGODB_URL: mongodb://mongouser:mongopassword@mongodb:27017/
+    volumes:
+      - mongo_data:/var/lib/mongodb/data/
 
   mongo-express:
     image: mongo-express
@@ -33,3 +36,4 @@ services:
 
 volumes:
   pg_data:
+  mongo_data:
