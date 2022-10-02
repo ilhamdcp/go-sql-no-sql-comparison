@@ -1,7 +1,7 @@
 package mongodb
 
 type Menu struct {
-	Id          string
+	IdString    string
 	Name        string
 	Description string
 	Price       int32
@@ -9,6 +9,6 @@ type Menu struct {
 }
 
 type Category struct {
-	Id   string
-	Name string
+	IdString string
+	Name     string
 }

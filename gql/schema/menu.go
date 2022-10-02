@@ -9,6 +9,10 @@ var MenuType = graphql.NewObject(graphql.ObjectConfig{
 			Name: "id",
 			Type: graphql.Int,
 		},
+		"idString": &graphql.Field{
+			Name: "idString",
+			Type: graphql.String,
+		},
 		"name": &graphql.Field{
 			Name:        "name",
 			Type:        graphql.String,
@@ -39,6 +43,10 @@ var MenuCategoryType = graphql.NewObject(graphql.ObjectConfig{
 		"id": &graphql.Field{
 			Name: "id",
 			Type: graphql.Int,
+		},
+		"idString": &graphql.Field{
+			Name: "idString",
+			Type: graphql.String,
 		},
 		"name": &graphql.Field{
 			Name: "name",
@@ -74,6 +82,18 @@ var OrderType = graphql.NewObject(graphql.ObjectConfig{
 			Name:        "createdAt",
 			Type:        graphql.DateTime,
 			Description: "Timestamp of when the order was created",
+		},
+	},
+})
+
+var PlatformEnumType = graphql.NewEnum(graphql.EnumConfig{
+	Name: "platform",
+	Values: graphql.EnumValueConfigMap{
+		"POSTGRESQL": &graphql.EnumValueConfig{
+			Value: "postgresql",
+		},
+		"MONGODB": &graphql.EnumValueConfig{
+			Value: "mongodb",
 		},
 	},
 })

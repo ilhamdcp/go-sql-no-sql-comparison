@@ -12,6 +12,10 @@ var MenuQueryFields = graphql.Fields{
 		Description: "Get all menus",
 		Type:        graphql.NewList(schema.MenuType),
 		Args: graphql.FieldConfigArgument{
+			"platform": &graphql.ArgumentConfig{
+				Type:        schema.PlatformEnumType,
+				Description: "Method to retrieve data e.g. postgresql, mongo",
+			},
 			"id": &graphql.ArgumentConfig{
 				Type:        graphql.Int,
 				Description: "ID of the menu in the database",

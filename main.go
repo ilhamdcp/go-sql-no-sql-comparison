@@ -12,7 +12,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"net/http"
-	"time"
 )
 
 func main() {
@@ -35,12 +34,10 @@ func main() {
 	}
 	mongodb.MongoClient = client
 
-	context, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
+	ctx := context.Background()
+	defer ctx.Done()
 
-	mongodb.Context = context
-
-	mongodb.GetMenus()
+	mongodb.Context = ctx
 
 	var schema, errGraphql = graphql.NewSchema(graphql.SchemaConfig{
 		Query: graphql.NewObject(graphql.ObjectConfig{
